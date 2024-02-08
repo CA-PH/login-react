@@ -2,17 +2,8 @@ import {BrowserRouter, Routes, Route } from 'react-router-dom'
 //pages and components
 import UserManagement from './pages/UserManagement'
 import Navbar from './components/Navbar'
-import Login from './pages/Login';
+import Login from './pages/Login'
 
-function requireAuth(nextState, replace, next) {
-  if (!authenticated) {
-    replace({
-      pathname: "/login",
-      state: {nextPathname: nextState.location.pathname}
-    });
-  }
-  next();
-}
 
 function App() {
   return (
@@ -24,7 +15,6 @@ function App() {
             <Route 
               path='/'
               element={<UserManagement />}
-              onEnter={requireAuth}
             />
             <Route 
               path='/login'
