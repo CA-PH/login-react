@@ -2,9 +2,10 @@ import { useState } from "react";
 import { useStaffsContext } from "../../hooks/useStaffsContext";
 import { useNavigate } from "react-router-dom";
 
-const LoginForm = () => {
+const SignupForm = () => {
   const { dispatch } = useStaffsContext();
-
+  const [fullname, setFullname] = useState("");
+  const [role, setRole] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -15,7 +16,7 @@ const LoginForm = () => {
     e.preventDefault();
     const staff = { email, password };
 
-    const response = await fetch("/api/staffs/login", {
+    const response = await fetch("/api/staffs/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -38,8 +39,15 @@ const LoginForm = () => {
   };
 
   return (
-    <form className="login" onSubmit={handleLogin}>
-      <h3>Login</h3>
+    <form className="signup" onSubmit={handleLogin}>
+      <h3>Signup</h3>
+      <label>Full Name: </label>
+      <input
+        type="text"
+        onChange={(e) => setFullname(e.target.value)}
+        value={fullname}
+        className={emptyFields.includes("fullname") ? "error" : ""}
+      />
       <label>Email: </label>
       <input
         type="text"
@@ -54,10 +62,17 @@ const LoginForm = () => {
         value={password}
         className={emptyFields.includes("password") ? "error" : ""}
       />
-      <button onClick={handleLogin}>Login</button>
+      <select>
+        <option value={"Receptionist"}>Receptionist</option>
+        <option value={"Reservation Staff"}>Reservation Staff</option>
+        <option value={"General Manager"}>General Manager</option>
+        <option value={"Manager"}>Manager</option>
+        <option value={"Supervisor"}>Supervisor</option>
+      </select>
+      <button onClick={handleSignup}>Sign Up</button>
       {error && <div className="error">{error}</div>}
     </form>
   );
 };
 
-export default LoginForm;
+export default SignupForm;

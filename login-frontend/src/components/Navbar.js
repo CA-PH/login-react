@@ -6,11 +6,15 @@ const Navbar = () => {
         <header>
             <div className="container">
                 <Link to="/">
-                    <h1>User Management</h1>
+                    <h1>Users</h1>
                 </Link>
                 <div>
                     <Link to="/login">
-                        <h1>Login</h1>
+                        Login
+                    </Link>
+
+                    <Link to="/signup" style={{margin:10}}>
+                        Sign Up
                     </Link>
                 </div>
             </div>
