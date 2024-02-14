@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useStaffsContext } from "../../hooks/useStaffsContext";
 import { useNavigate } from "react-router-dom";
 import { useSignup } from '../../hooks/useSignup';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const SignupForm = () => {
   const { dispatch } = useStaffsContext();
@@ -16,10 +15,7 @@ const SignupForm = () => {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    const auth = getAuth();
-    
-    createUserWithEmailAndPassword(auth, email, password)
-    // signup(email, password, fullname, role)
+    signup(email, password, fullname, role)
   };
 
   return (
