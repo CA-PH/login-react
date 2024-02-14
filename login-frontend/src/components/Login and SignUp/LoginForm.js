@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useStaffsContext } from "../../hooks/useStaffsContext";
 import { useNavigate } from "react-router-dom";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const LoginForm = () => {
   const { dispatch } = useStaffsContext();
@@ -12,29 +13,16 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    const staff = { email, password };
+    e.preventDefault()
+    const auth = getAuth()
 
-    const response = await fetch("/api/staffs/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(staff)
-    });
+    await signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      console.log(userCredential)
+    }).catch((error) => {
+      console.log(error)
+    })
 
-    const json = await response.json();
-    if (!response.ok) { 
-      setError(json.error);
-    }
-    if (response.ok) {
-      setEmail("");
-      setPassword("");
-      setError(null);
-      setemptyFields([]);
-      navigate("/");
-      // dispatch({type: 'CREATE_STAFFS', payload: json})
-    }
   };
 
   return (

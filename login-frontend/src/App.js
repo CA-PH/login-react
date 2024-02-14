@@ -23,7 +23,7 @@ function App() {
               />
             <Route 
               path='/signup'
-              element={<Login/>}
+              element={<Signup/>}
               />
           </Routes>
         </div>
