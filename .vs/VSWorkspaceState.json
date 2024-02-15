@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\login-frontend",
+    "\\login-frontend\\src",
+    "\\login-frontend\\src\\components",
+    "\\login-frontend\\src\\components\\Login and SignUp",
+    "\\login-frontend\\src\\context",
+    "\\login-frontend\\src\\hooks",
+    "\\react-project-1"
+  ],
+  "SelectedNode": "\\login-frontend\\src\\components\\Login and SignUp\\SignupForm.js",
+  "PreviewInSolutionExplorer": false
+}

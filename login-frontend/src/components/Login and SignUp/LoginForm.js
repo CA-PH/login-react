@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useStaffsContext } from "../../hooks/useStaffsContext";
 import { useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase"
 
 const LoginForm = () => {
   const { dispatch } = useStaffsContext();
@@ -14,7 +15,6 @@ const LoginForm = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault()
-    const auth = getAuth()
 
     await signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
