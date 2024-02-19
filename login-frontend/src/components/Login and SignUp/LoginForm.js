@@ -1,28 +1,39 @@
 import { useState } from "react";
-import { useStaffsContext } from "../../hooks/useStaffsContext";
 import { useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase"
+import { UserAuth } from "../../context/AuthContext";
 
 const LoginForm = () => {
-  const { dispatch } = useStaffsContext();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [emptyFields, setemptyFields] = useState([]);
   const navigate = useNavigate();
+  const { login, user } = UserAuth();
+  
+  console.log(user)
+  if(user){
+    navigate("/")
+  }
 
   const handleLogin = async (e) => {
-    e.preventDefault()
-
-    await signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      console.log(userCredential)
-    }).catch((error) => {
-      console.log(error)
-    })
-
+    e.preventDefault();
+    if(!email){
+      setemptyFields("email")
+    }
+    if(!password){
+      setemptyFields("password")
+    }
+    if(emptyFields.length > 0){
+      return setError("Please fill in all the fields", {emptyFields})
+    }
+    try {
+      await login(email,password)
+      setemptyFields([])
+      setError('')
+      navigate("/")
+    } catch (error) {
+      setError(error)
+    }
   };
 
   return (
