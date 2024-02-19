@@ -1,4 +1,11 @@
-import { createContext, useReducer } from 'react'
+import { createContext, useState, useEffect, useContext } from 'react'
+import { 
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+} from 'firebase/auth'
+import { auth } from '../firebase'
 
 export const AuthContext = createContext()
 
@@ -14,13 +21,37 @@ export const authReducer = (state, action) => {
 }
 
 export const AuthContextProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(authReducer, {
-        user: null
-    })
+    const [ user, setUser ] = useState({})
+    const signUp = (email, password) => {
+        return createUserWithEmailAndPassword(auth, email, password)
+
+    }
+    
+    const login = (email, password) => {
+        return signInWithEmailAndPassword(auth, email, password)
+    }
+
+    const logout = () => { 
+        return signOut(auth)
+    }
+
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser)
+        })
+        return () => {
+            unsubscribe();
+        }
+    }, [])
 
     return(
-        <AuthContext.Provider value ={{...state, dispatch}}>
+        <AuthContext.Provider value ={{user, signUp, login, logout}}>
             { children }
         </AuthContext.Provider>
     )
+}
+
+export const UserAuth = () => {
+    return useContext(AuthContext)
 }

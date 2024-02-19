@@ -4,11 +4,12 @@ import UserManagement from './pages/UserManagement'
 import Navbar from './components/Navbar'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
-
+import { AuthContextProvider } from './context/AuthContext'
 
 function App() {
   return (
     <div className="App">
+      <AuthContextProvider>
       <BrowserRouter>
       <Navbar />
         <div className='pages'>
@@ -28,6 +29,7 @@ function App() {
           </Routes>
         </div>
       </BrowserRouter>  
+      </AuthContextProvider>
     </div>
   );
 }

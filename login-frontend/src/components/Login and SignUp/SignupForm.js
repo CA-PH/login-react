@@ -1,28 +1,31 @@
 import { useState } from "react";
-import { useStaffsContext } from "../../hooks/useStaffsContext";
 import { useNavigate } from "react-router-dom";
-import { useSignup } from '../../hooks/useSignup';
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase";
+import { UserAuth } from "../../context/AuthContext";
 
 const SignupForm = () => {
-  const { dispatch } = useStaffsContext();
   const [fullname, setFullname] = useState("");
   const [role, setRole] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emptyFields, setemptyFields] = useState([]);
+  const [error, setError] = useState("")
   const navigate = useNavigate();
-  const { signup, error, isLoading } = useSignup();
+  const { signUp } = UserAuth();
 
   const handleSignup = async (e) => {
       e.preventDefault();
-      createUserWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-              console.log(userCredential)
-          }).catch((error) => {
-              console.log(error)
-          })
+      if(emptyFields){
+        console.log(emptyFields)
+        return setError("Please fill in all the fields", {emptyFields})
+      }
+      try {
+        await signUp(email,password)
+        setemptyFields([])
+        navigate("/")
+      } catch (error) {
+        setError(error)
+      }
+  
   //  signup(email, password, fullname, role)
   };
 
@@ -62,7 +65,7 @@ const SignupForm = () => {
         <option value={"Manager"}>Manager</option>
         <option value={"Supervisor"}>Supervisor</option>
       </select>
-      <button disabled={isLoading}>Sign Up</button>
+      <button>Sign Up</button>
       {error && <div className="error">{error}</div>}
     </form>
   );
