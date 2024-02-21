@@ -10,7 +10,11 @@ const SignupForm = () => {
   const [emptyFields, setemptyFields] = useState([]);
   const [error, setError] = useState("")
   const navigate = useNavigate();
-  const { signUp } = UserAuth();
+  const { signUp, user } = UserAuth();
+
+  if(user){
+    navigate("/")
+  }
 
   const handleSignup = async (e) => {
       e.preventDefault();

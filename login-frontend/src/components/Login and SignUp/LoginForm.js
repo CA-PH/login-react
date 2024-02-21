@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 
@@ -9,35 +9,55 @@ const LoginForm = () => {
   const [emptyFields, setemptyFields] = useState([]);
   const navigate = useNavigate();
   const { login, user } = UserAuth();
-  
-  console.log(user)
+  const { formValid, setFormValid } = useState(0);
+
   if(user){
     navigate("/")
   }
 
+  // useEffect(() => {
+  //   if(formValid==1){
+  //     firebaseLog()
+  //   }
+  //   else{
+  //     setError('Please fill in all fields')
+  //   }
+  // },[formValid, emptyFields])
+
   const handleLogin = async (e) => {
     e.preventDefault();
+    setemptyFields([]);
+    setError('')
+
     if(!email){
-      setemptyFields("email")
+      setemptyFields((oldVal) => [...oldVal, "email"])
+      setError('Please fill in all fields')
     }
     if(!password){
-      setemptyFields("password")
+      setemptyFields((oldVal) => [...oldVal, "password"])
+      setError('Please fill in all fields')
     }
-    if(emptyFields.length > 0){
-      return setError("Please fill in all the fields", {emptyFields})
-    }
-    try {
-      await login(email,password)
-      setemptyFields([])
-      setError('')
-      navigate("/")
-    } catch (error) {
-      setError(error)
+    if(email && password){
+      firebaseLog(e);
     }
   };
 
+  const firebaseLog = async (e) => {
+    e.preventDefault();
+
+    try {
+      await login(email,password)
+      setemptyFields([]);
+      setError('');
+      navigate("/");
+      
+    } catch (error) {
+      setError(error.message)
+    }
+  }
+
   return (
-    <form className="login" onSubmit={handleLogin}>
+    <form className="login" >
       <h3>Login</h3>
       <label>Email: </label>
       <input
