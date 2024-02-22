@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../context/AuthContext";
 
@@ -9,20 +9,10 @@ const LoginForm = () => {
   const [emptyFields, setemptyFields] = useState([]);
   const navigate = useNavigate();
   const { login, user } = UserAuth();
-  const { formValid, setFormValid } = useState(0);
 
   if(user){
     navigate("/")
   }
-
-  // useEffect(() => {
-  //   if(formValid==1){
-  //     firebaseLog()
-  //   }
-  //   else{
-  //     setError('Please fill in all fields')
-  //   }
-  // },[formValid, emptyFields])
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -52,7 +42,7 @@ const LoginForm = () => {
       navigate("/");
       
     } catch (error) {
-      setError(error.message)
+      setError("Invalid Email or Password")
     }
   }
 
@@ -73,7 +63,10 @@ const LoginForm = () => {
         value={password}
         className={emptyFields.includes("password") ? "error" : ""}
       />
-      <button onClick={handleLogin}>Login</button>
+      <a href="/forgotpass"><u>Forgot Password</u></a><br /><br />
+      <div className="login-btn">
+        <button onClick={handleLogin}>Login</button>
+        </div>
       {error && <div className="error">{error}</div>}
     </form>
   );

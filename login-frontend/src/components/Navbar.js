@@ -14,6 +14,18 @@ const Navbar = () => {
                 <Link to="/">
                     <h1>Users</h1>
                 </Link>
+                <Link to="/">
+                    <h1>Cancelled</h1>
+                </Link>
+                <Link to="/">
+                    <h1>Arrival</h1>
+                </Link>
+                <Link to="/">
+                    <h1>Notification</h1>
+                </Link>
+                <Link to="/">
+                    <h1>Reports</h1>
+                </Link>
                 <nav>
                 {user && 
                 <div>

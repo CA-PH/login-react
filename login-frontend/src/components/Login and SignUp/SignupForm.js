@@ -18,12 +18,12 @@ const SignupForm = () => {
 
   const handleSignup = async (e) => {
       e.preventDefault();
-      if(emptyFields){
-        console.log(emptyFields)
-        return setError("Please fill in all the fields", {emptyFields})
-      }
+      // if(emptyFields){
+      //   console.log(emptyFields)
+      //   return setError("Please fill in all the fields", {emptyFields})
+      // }
       try {
-        await signUp(email,password)
+        await signUp(email,password,fullname, role)
         setemptyFields([])
         navigate("/")
       } catch (error) {
@@ -68,6 +68,8 @@ const SignupForm = () => {
         <option value={"General Manager"}>General Manager</option>
         <option value={"Manager"}>Manager</option>
         <option value={"Supervisor"}>Supervisor</option>
+        <option value={"OR Handler"}>OR Handler</option>
+
       </select>
       <button>Sign Up</button>
       {error && <div className="error">{error}</div>}

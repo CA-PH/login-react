@@ -4,8 +4,10 @@ import {
     signInWithEmailAndPassword,
     signOut,
     onAuthStateChanged,
+    sendPasswordResetEmail,
 } from 'firebase/auth'
-import { auth } from '../firebase'
+import { auth, db } from '../firebase'
+import { doc, collection, setDoc } from "firebase/firestore"; 
 
 export const AuthContext = createContext()
 
@@ -22,10 +24,36 @@ export const authReducer = (state, action) => {
 
 export const AuthContextProvider = ({ children }) => {
     const [ user, setUser ] = useState({})
-    const signUp = (email, password) => {
-        return createUserWithEmailAndPassword(auth, email, password)
 
+    const signUp = (email, password, fullname, role) => {
+        if(email && password && fullname && role){
+        const firebaseSign = createUserWithEmailAndPassword(auth, email, password).then(cred => {
+            const myCollection = collection(db, 'users');
+            const myDocumentData = {
+            fullname: fullname,
+            role: role,
+            };
+
+            // Define the document reference
+            const myDocRef = doc(myCollection, cred.user.uid);
+
+            // Add or update the document
+            setDoc(myDocRef, myDocumentData)
+            .then(() => {
+                console.log("Document has been added successfully");
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        })
+        
+        return firebaseSign;
     }
+        else{
+            return Error("Please fill in all the details")
+        }
+        }
+
     
     const login = (email, password) => {
         return signInWithEmailAndPassword(auth, email, password)
@@ -33,6 +61,10 @@ export const AuthContextProvider = ({ children }) => {
 
     const logout = () => { 
         return signOut(auth)
+    }
+
+    const forgotPass = (email) => {
+        return sendPasswordResetEmail(auth, email)
     }
 
 
@@ -46,7 +78,7 @@ export const AuthContextProvider = ({ children }) => {
     }, [])
 
     return(
-        <AuthContext.Provider value ={{user, signUp, login, logout}}>
+        <AuthContext.Provider value ={{user, signUp, login, logout, forgotPass}}>
             { children }
         </AuthContext.Provider>
     )

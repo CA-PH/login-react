@@ -4,6 +4,7 @@ import UserManagement from './pages/UserManagement'
 import Navbar from './components/Navbar'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import ForgotPass from './pages/ForgotPass'
 import { AuthContextProvider } from './context/AuthContext'
 
 function App() {
@@ -25,6 +26,10 @@ function App() {
             <Route 
               path='/signup'
               element={<Signup/>}
+              />
+            <Route 
+              path='/forgotpass'
+              element={<ForgotPass/>}
               />
           </Routes>
         </div>
