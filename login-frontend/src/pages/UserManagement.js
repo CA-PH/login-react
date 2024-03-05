@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useUsersContext } from "../hooks/useUsersContext";
 import UserDetails from "../components/User/UserDetails";
@@ -7,41 +7,47 @@ import { UserAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const UserManagement = () => {
-  const { users, dispatch } = useUsersContext();
-  const { user } = UserAuth();
-  const navigate = useNavigate();
+    const { users, dispatch } = useUsersContext();
+    const { user } = UserAuth();
+    const navigate = useNavigate();
+    const [ search, setSearch ] = useState("");
 
-  if(!user){
+    if(!user){
     navigate("/login")
-  }
+    }
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const response = await fetch("/api/users");
-      const json = await response.json();
+    useEffect(() => {
+        const fetchUsers = async () => {
+        const response = await fetch("/api/users");
+        const json = await response.json();
 
-      if (response.ok) {
+        if (response.ok) {
         dispatch({ type: "SET_USERS", payload: json });
-      }
+        }
     };
     fetchUsers();
-  }, []);
-  return (
-    <div className="home-container">
-      {user && 
-      <div className="home">
+    }, []);
+
+    return (
+        <div className="home-container">
+            <div className="search">
+                <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search" />
+                    </div>
+
+        {user && 
+    <div className="home">
         <div className="users">
-          {users &&
-            users.map((user) => <UserDetails key={user._id} user={user} />)}
+            {search.length > 0 ?
+                users && users.filter(x => x.fullname.includes(search)).map((user) => <UserDetails key={user._id} user={user} />)
+                : users && users.map((user) => <UserDetails key={user._id} user={user} />)}
         </div>
         <div>
-          <UserForm />
+            <UserForm />
         </div>
-      </div>
-      }
-
+        </div>
+        }
     </div>
-  );
-};
+    );
+    };
 
 export default UserManagement;

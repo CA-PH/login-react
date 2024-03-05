@@ -111,7 +111,6 @@ input{
   border: 1px solid #ddd;
   border-radius: 4px;
   box-sizing: border-box;
-
 }
 select{
   padding: 10px;
@@ -174,4 +173,21 @@ nav button{
 .login-btn {
   display:block;
   text-align: center;
+}
+
+.search {
+    display: grid;
+    width: 77%;
+    grid-template-columns: 1fr 0fr;
+    gap: 100px;
+}
+
+.search button {
+    background: var(--primary);
+    border: 0;
+    color: #fff;
+    padding: 10px;
+    font-family: "Poppins";
+    border-radius: 4px;
+    cursor: pointer;
 }
