@@ -38,7 +38,7 @@ const UserManagement = () => {
     <div className="home">
         <div className="users">
             {search.length > 0 ?
-                users && users.filter(x => x.fullname.includes(search)).map((user) => <UserDetails key={user._id} user={user} />)
+                            users && users.filter(x => x.fullname.toLowerCase().includes(search.toLowerCase())).map((user) => <UserDetails key={user._id} user={user} />)
                 : users && users.map((user) => <UserDetails key={user._id} user={user} />)}
         </div>
         <div>
