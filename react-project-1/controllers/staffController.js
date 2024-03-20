@@ -21,7 +21,7 @@ const getStaff = async (req, res) => {
     }
 
     const staff = await Staff.findById(id)
-    if(!workout){
+    if (!staff){
         return res.status(404).json({error: "Staff does not exist"})
     }
     res.status(200).json(staff)

@@ -15,7 +15,7 @@ const getUser = async (req, res) => {
     }
 
     const user = await User.findById(id)
-    if(!workout){
+    if (!user){
         return res.status(404).json({error: "User does not exist"})
     }
     res.status(200).json(user)
